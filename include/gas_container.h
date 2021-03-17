@@ -12,18 +12,21 @@ namespace idealgas {
  * The container in which all of the gas particles are contained. This class
  * stores all of the particles and updates them on each frame of the simulation.
  */
-class GasContainer { // TODO: how do i pass values into the constructor --> i get an error everytime
+class GasContainer {
  public:
-
-
-//
-//  /**
-//   * TODO: Add more parameters to this constructor, and add documentation.
-//   */
-//  GasContainer(int num_particles);
-
-//  GasContainer(int particle_count, vec2 container_dimension, vec2 top_left_position);
-  GasContainer();
+  /**
+   * Initialize GasContainer with parameters
+   * @param particle_count      Number of particles
+   * @param top_left_position   Coordinates (x, y) of the top left corner of the
+   *                            container
+   * @param container_dimension 2d vector as <width, height> of the container
+   * @param seed                seed for generating random numbers
+   * @param particlePhysicsEngine       a Physics engine to handle the particles
+   *                            movement
+   */
+  GasContainer(size_t particle_count, vec2 top_left_position,
+               vec2 container_dimension, int seed,
+               SimpleParticlePhysicsEngine particlePhysicsEngine);
   /**
    * Displays the container walls and the current positions of the particles.
    */
@@ -36,18 +39,17 @@ class GasContainer { // TODO: how do i pass values into the constructor --> i ge
   void AdvanceOneFrame();
 
  private:
-  const float kTopLeftX = 100; // TODO: do i make these 'extern' and define elsewhere?
-  const float kTopLeftY = 100;
-  const float kWidth = 1000;
-  const float kHeight = 1000;
-  const size_t kParticleCount = 15;
-  const float kMinVelocityComponent = -3;
-  const float kMaxVelocityComponent = 3;
+  const float kMaxVelocityComponent = 10;
+  const float kMinVelocityComponent = -kMaxVelocityComponent;
   const float kDefaultParticleRadius = 30;
   const ci::ColorT<float> kDefaultParticleColor = "red";
 
   /** A margin from inside the container that particles should not spawn in **/
   const float kMargin = 50;
+
+  float width_;
+  float height_;
+  size_t particle_count_;
 
   /** Collection of particles inside the container **/
   std::vector<Particle> particles_;
@@ -61,7 +63,8 @@ class GasContainer { // TODO: how do i pass values into the constructor --> i ge
   /** Location of the Bottom-right corner of the box relative to the canvas**/
   glm::vec2 bottom_right_position;
 
-  SimpleParticlePhysicsEngine physicsEngine_;
+  /** A Particle Physics Engine object to handle the movements of particles **/
+  SimpleParticlePhysicsEngine particlePhysicsEngine;
 
   void InitializeParticlesCollection();
   void DrawContainer() const;
