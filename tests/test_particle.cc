@@ -1,6 +1,7 @@
+#include <gas_container.h>
+
 #include <catch2/catch.hpp>
 
-#include <gas_container.h>
 #include "simple_particle_physics_engine.h"
 
 using idealgas::Particle;
@@ -26,7 +27,8 @@ TEST_CASE("Move function") {
     REQUIRE(particle.GetPosition() == vec2(6, 8));
   }
 
-  SECTION("Move after changing velocity - does it move to the updated velocity?") {
+  SECTION(
+      "Move after changing velocity - does it move to the updated velocity?") {
     particle.SetVelocityX(-2);
     particle.SetVelocityY(-5);
     REQUIRE(particle.GetPosition() == vec2(0, -2));
