@@ -38,6 +38,13 @@ class GasContainer {
    */
   void AdvanceOneFrame();
 
+  float GetWidth() const;
+  float GetHeight() const;
+  size_t GetParticleCount() const;
+  const vec2& GetTopLeftPosition() const;
+  const vec2& GetBottomRightPosition() const;
+  const std::vector<Particle>& GetParticles() const;
+
  private:
   const float kMaxVelocityComponent = 10;
   const float kMinVelocityComponent = -kMaxVelocityComponent;
@@ -69,16 +76,6 @@ class GasContainer {
   void InitializeParticlesCollection();
   void DrawContainer() const;
   void DrawParticles() const;
-
-  /**
-   * Generates a random integer between lower_bound (inclusive) and
-   * upper_bound (exclusive). i.e, range = [lower_bound, upper_bound)
-   *
-   * @param lower_bound minimum value for random number (inclusive)
-   * @param upper_bound maximum value for random number (exclusive)
-   * @return            a random integer
-   */
-  int GenerateRandomInt(int lower_bound, int upper_bound);
 
   /**
    * Generates a random float between lower_bound (inclusive) and

@@ -33,6 +33,7 @@ class IdealGasApp : public ci::app::App {
   const float kHeight = 1000;
   const size_t kParticleCount = 15;
   const int kRandomSeed = 100;
+  const SimpleParticlePhysicsEngine kPhysicsEngine = SimpleParticlePhysicsEngine();
 
  private:
   GasContainer container_;

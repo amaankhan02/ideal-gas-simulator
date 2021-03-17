@@ -95,7 +95,8 @@ class SimpleParticlePhysicsEngine {
    * @return                Returns true if the 2 particles are approaching
    *                        each other, false if they are moving away
    */
-  bool AreParticlesApproachingEachOther(Particle& particle_one, Particle& particle_two);
+  bool AreParticlesApproachingEachOther(Particle& particle_one,
+                                        Particle& particle_two);
 
   /**
    * Uses the equation to find the new velocity for an object in a 2D

@@ -7,7 +7,6 @@
 #ifndef IDEAL_GAS_PARTICLE_H
 #define IDEAL_GAS_PARTICLE_H
 
-
 namespace idealgas {
 
 /**
@@ -24,8 +23,8 @@ class Particle {
    * @param velocity_x x component of the Particle's velocity
    * @param velocity_y y component of the Particle's velocity
    */
-  Particle(glm::vec2 position, glm::vec2 velocity,
-           ci::Color particle_color, float radius);
+  Particle(glm::vec2 position, glm::vec2 velocity, ci::Color particle_color,
+           float radius);
 
   /**
    * Particles moves one time step by using velocity
@@ -43,8 +42,7 @@ class Particle {
   glm::vec2 velocity_;
   ci::Color color_;
   float radius_;
-
 };
-} // namespace idealgas
+}  // namespace idealgas
 
 #endif  // IDEAL_GAS_PARTICLE_H
