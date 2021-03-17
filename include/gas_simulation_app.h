@@ -17,10 +17,12 @@ class IdealGasApp : public ci::app::App {
   void draw() override;
   void update() override;
 
-  // TODO: Delete this comment. Feel free to play around with these variables
   // provided that you can see the entire UI on your screen.
-  const int kWindowSize = 875;
+  const int kWindowSize = 1200;
   const int kMargin = 100;
+  const int kParticleCount = 10;
+  const int kContainerWidth = 1000;
+  const int kContainerHeight = 1000; // TODO: add these changes to constructor GasContainer()
 
  private:
   GasContainer container_;
