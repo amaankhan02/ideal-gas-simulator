@@ -22,9 +22,12 @@ class Particle {
    * @param velocity x and y component of the Particle's velocity
    * @param particle_color color of the particle
    * @param radius radius of the particle
+   * @param mass mass of the particle
+   * @param type_name   the name of the particle type. Anything you wish to name
+   *                    the particle type as
    */
   Particle(glm::vec2 position, glm::vec2 velocity, ci::Color particle_color,
-           float radius);
+           float radius, float mass, std::string type_name="");
 
   /**
    * Particles moves one time step by using velocity
@@ -33,7 +36,9 @@ class Particle {
   ci::Color GetColor() const;
   const glm::vec2& GetPosition() const;
   const glm::vec2& GetVelocity() const;
+  float GetSpeed() const;
   float GetRadius() const;
+  std::string GetTypeName() const;
 
   /**
    * Checks if the 2 particles are touching each other.
@@ -60,13 +65,13 @@ class Particle {
     * Calculates & updates the new velocity of the particle when colliding with
     * a vertical wall
    */
-  bool UpdateVelocityForVerticalWallCollision();
+  void UpdateVelocityForVerticalWallCollision();
 
   /**
     * Calculates & updates the new velocity of the particle when colliding with
     * a horizontal wall
    */
-  bool UpdateVelocityForHorizontalWallCollision();
+  void UpdateVelocityForHorizontalWallCollision();
 
   /**
    * Uses the equation to find the new velocity for an object in a 2D
@@ -85,6 +90,7 @@ class Particle {
   ci::Color color_;
   float radius_;
   float mass_;
+  std::string type_name_;
 
   /**
    * Uses the equation to find the new velocity for an object in a 2D
@@ -94,9 +100,10 @@ class Particle {
    * @param particle1   the first particle in the collision
    * @param particle2   the second particle in the collision
    */
-  glm::vec2 Particle::ComputeVelocityForParticleCollision(Particle& particle1,
-                                                          Particle& particle2) const;
+  glm::vec2 Particle::ComputeVelocityForParticleCollision(glm::vec2& velocity1, glm::vec2& velocity2, glm::vec2& position1,
+    glm::vec2& position2);
 
+  glm::vec2 Particle::ComputeVelocityForParticleCollision(Particle& particle1, Particle& particle2);
 };
 }  // namespace idealgas
 
