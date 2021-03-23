@@ -2,6 +2,7 @@
 
 #include "cinder/gl/gl.h"
 #include "particle.h"
+#include "histogram.h"
 
 using glm::vec2;
 
@@ -12,7 +13,12 @@ namespace idealgas {
  * stores all of the particles and updates them on each frame of the simulation.
  */
 class GasContainer {
+
  public:
+  const std::string kBlueParticleType = "BLUE"; // todo: can make these enums later
+  const std::string kRedParticleType = "RED";
+  const std::string kGreenParticleType = "GREEN";
+
   /**
    * Initialize GasContainer with parameters
    * @param particle_count      Number of particles
@@ -36,7 +42,7 @@ class GasContainer {
    */
   void AdvanceOneFrame();
 
-
+  const std::map<std::string, std::vector<float>>& GetParticleSpeeds() const;
 
   float GetWidth() const;
   float GetHeight() const;
@@ -45,11 +51,22 @@ class GasContainer {
   const vec2& GetBottomRightPosition() const;
   const std::vector<Particle>& GetParticles() const;
 
+
  private:
-  const float kMaxVelocityComponent = 10;
+  const float kMaxVelocityComponent = 7;
+
   const float kMinVelocityComponent = -kMaxVelocityComponent;
-  const float kDefaultParticleRadius = 30;
-  const ci::ColorT<float> kDefaultParticleColor = "red";
+  const ci::ColorT<float> kBlueParticleColor = "blue";
+  const float kBlueParticleMass = 5;
+  const float kBlueParticleRadius = 20;
+
+  const ci::ColorT<float> kRedParticleColor = "red";
+  const float kRedParticleMass = 7;
+  const float kRedParticleRadius = 25;
+
+  const ci::ColorT<float> kGreenParticleColor = "green";
+  const float kGreenParticleMass = 10;
+  const float kGreenParticleRadius = 30;
 
   /** A margin from inside the container that particles should not spawn in **/
   const float kMargin = 50;
@@ -57,6 +74,10 @@ class GasContainer {
   float width_;
   float height_;
   size_t particle_count_;
+
+  std::vector<float> blue_particle_speeds;
+  std::vector<float> red_particle_speeds;
+  std::vector<float> green_particle_speeds;
 
   /** Collection of particles inside the container **/
   std::vector<Particle> particles_;
@@ -70,10 +91,20 @@ class GasContainer {
   /** Location of the Bottom-right corner of the box relative to the canvas**/
   glm::vec2 bottom_right_position;
 
+  std::map<std::string, std::vector<float>> particle_speeds_;
+
   void InitializeParticlesCollection();
+  void InitializeParticleSpeedsMap();
+  void UpdateParticlesSpeedMap();
+  void ClearParticleSpeedsMapVectors();
   void DrawContainer() const;
   void DrawParticles() const;
-  void DrawHistograms() const;
+
+  int GenerateRandomInt(int lower_bound, int upper_bound);
+  Particle GenerateRandomParticle(int particle_number);
+  void SetRandomPosition(vec2& position);
+  void SetRandomVelocity(vec2& velocity);
+
 
   /**
    * Generates a random float between lower_bound (inclusive) and
@@ -84,8 +115,7 @@ class GasContainer {
    * @return            a random float
    */
   float GenerateRandomFloat(float lower_bound, float upper_bound);
-  void SetRandomPosition(vec2& position);
-  void SetRandomVelocity(vec2& velocity);
+
 
   /**
   * Checks for any collisions (wall or other particle collisions) and
@@ -119,7 +149,7 @@ class GasContainer {
    *                        returns -1 if the particle is not colliding with
    *                        any particle
    */
-  int GetCollidingParticleIndex(int particle_index) const;
+  int GetCollidingParticleIndex(size_t particle_index) const;
 
   /**
    * Checks if the particle is colliding with a particle and calls the
@@ -128,7 +158,7 @@ class GasContainer {
    *
    * @param particle    particle to check if it is colliding with wall
    */
-  void HandleForIfWallCollision(Particle& particle) const;
+  void HandleIfWallCollision(Particle& particle);
 
 
 };
