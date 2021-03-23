@@ -42,7 +42,7 @@ class SimpleParticlePhysicsEngine {
    */
   void UpdateParticleVelocity(Particle& particle, Particle& closest_particle,
                               glm::vec2 container_top_left,
-                              glm::vec2 container_bottom_right);
+                              glm::vec2 container_bottom_right); // TODO: moved to gas container cuz Michael said that you shouldn't pass
 
   /**
    * Finds the nearest particle to the particle which is under question
@@ -59,7 +59,7 @@ class SimpleParticlePhysicsEngine {
    *                                question.
    */
   int SimpleParticlePhysicsEngine::FindNearestParticleIndex(
-      int current_particle_index, std::vector<Particle>& particles) const;
+      int current_particle_index, std::vector<Particle>& particles) const; // TODO: REMOVE
 
  private:
   /**
@@ -75,7 +75,7 @@ class SimpleParticlePhysicsEngine {
    */
   bool UpdateVelocityIfWallCollision(Particle& particle, float left_wall_x,
                                      float right_wall_x, float top_wall_y,
-                                     float bottom_wall_y);
+                                     float bottom_wall_y); // TODO: copied
 
   /**
    * Checks if the 2 particles are touching each other.
@@ -85,7 +85,7 @@ class SimpleParticlePhysicsEngine {
    * @param particle_two    particle two
    * @return                true if the particles are touching each other
    */
-  bool AreParticlesTouching(Particle& particle_one, Particle& particle_two);
+  bool AreParticlesTouching(Particle& particle_one, Particle& particle_two); // TODO: copied --> IsTouching(other)
 
   /**
    * Checks if the two particles are approaching each other.
@@ -96,7 +96,7 @@ class SimpleParticlePhysicsEngine {
    *                        each other, false if they are moving away
    */
   bool AreParticlesApproachingEachOther(Particle& particle_one,
-                                        Particle& particle_two);
+                                        Particle& particle_two); // TODO: copied --> IsApproaching(other)
 
   /**
    * Uses the equation to find the new velocity for an object in a 2D
@@ -112,7 +112,7 @@ class SimpleParticlePhysicsEngine {
    * @return            The new velocity for particle one after collision
    *                    between particle 1 and 2
    */
-  glm::vec2 ComputeVelocityAfterCollision(glm::vec2 velocity1,
+  glm::vec2 ComputeVelocityAfterCollision(glm::vec2 velocity1, // TODO: copied
                                           glm::vec2 velocity2,
                                           glm::vec2 position1,
                                           glm::vec2 position2);

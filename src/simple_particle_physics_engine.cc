@@ -9,6 +9,7 @@ using std::vector;
 
 namespace idealgas {
 
+// TODO: areparticlestouching and some other methods could be in particle
 bool SimpleParticlePhysicsEngine::AreParticlesTouching(Particle& particle_one,
                                                        Particle& particle_two) {
   // get distance between the 2 particles
@@ -53,6 +54,7 @@ void SimpleParticlePhysicsEngine::UpdateParticleVelocity(
   bool is_wall_collision = UpdateVelocityIfWallCollision(
       particle, container_top_left[0], container_bottom_right[0],
       container_top_left[1], container_bottom_right[1]);
+
   if (is_wall_collision) {
     return;  // break out if velocity was updated b/c of a wall collision
   }

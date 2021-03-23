@@ -2,7 +2,6 @@
 
 #include "cinder/gl/gl.h"
 #include "particle.h"
-#include "simple_particle_physics_engine.h"
 
 using glm::vec2;
 
@@ -25,8 +24,7 @@ class GasContainer {
    *                            movement
    */
   GasContainer(size_t particle_count, vec2 top_left_position,
-               vec2 container_dimension, int seed,
-               SimpleParticlePhysicsEngine particlePhysicsEngine);
+               vec2 container_dimension, int seed);
   /**
    * Displays the container walls and the current positions of the particles.
    */
@@ -37,6 +35,8 @@ class GasContainer {
    * described in the assignment documentation).
    */
   void AdvanceOneFrame();
+
+
 
   float GetWidth() const;
   float GetHeight() const;
@@ -70,12 +70,10 @@ class GasContainer {
   /** Location of the Bottom-right corner of the box relative to the canvas**/
   glm::vec2 bottom_right_position;
 
-  /** A Particle Physics Engine object to handle the movements of particles **/
-  SimpleParticlePhysicsEngine particlePhysicsEngine;
-
   void InitializeParticlesCollection();
   void DrawContainer() const;
   void DrawParticles() const;
+  void DrawHistograms() const;
 
   /**
    * Generates a random float between lower_bound (inclusive) and
@@ -88,6 +86,51 @@ class GasContainer {
   float GenerateRandomFloat(float lower_bound, float upper_bound);
   void SetRandomPosition(vec2& position);
   void SetRandomVelocity(vec2& velocity);
+
+  /**
+  * Checks for any collisions (wall or other particle collisions) and
+  * updates the velocity of particle & closest_particle respectfully
+  * depending on the condition.
+  *
+  * @param particle                The current particle to be viewed and
+  *                                checked for any collision
+  * @param closest_particle        The nearest particle to 'particle' object
+  *                                and is updated as well if there is a
+  *                                collision between particle and
+  *                                closest_particle
+  * @param container_top_left      top left coordinates of the container
+  *                                that the particle is in. Represented as
+  *                                <x, y> coordinates
+  * @param container_bottom_right  bottom right coordinates of the container
+  *                                that the particle is in. Represented as
+  *                                <x, y> coordinates
+  */
+  void UpdateParticleVelocity(Particle& particle, Particle& closest_particle,
+                              glm::vec2 container_top_left,
+                              glm::vec2 container_bottom_right); // TODO: do i want this here? is this already in particle.h?
+
+  /**
+   * Gets the index of the particle that is currently colliding with the
+   * particle at particle_index
+   *
+   * @param particle_index  the index (from particles_) of the particle that you
+   *                        wish to check if other particles are collding with
+   * @return                index of the colliding particle.
+   *                        returns -1 if the particle is not colliding with
+   *                        any particle
+   */
+  int GetCollidingParticleIndex(int particle_index) const;
+
+  /**
+   * Checks if the particle is colliding with a particle and calls the
+   * particles update velocity for wall collision function for its respective
+   * wall collision
+   *
+   * @param particle    particle to check if it is colliding with wall
+   */
+  void HandleForIfWallCollision(Particle& particle) const;
+
+
 };
 
 }  // namespace idealgas

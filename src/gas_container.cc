@@ -6,8 +6,7 @@ using glm::vec2;
 using std::vector;
 
 GasContainer::GasContainer(size_t particle_count, vec2 top_left_position,
-                           vec2 container_dimension, int seed,
-                           SimpleParticlePhysicsEngine particlePhysicsEngine) {
+                           vec2 container_dimension, int seed) {
   srand(seed);
   particle_count_ = particle_count;
   top_left_position_ = top_left_position;
@@ -18,7 +17,6 @@ GasContainer::GasContainer(size_t particle_count, vec2 top_left_position,
   container_box_ = ci::Rectf(top_left_position_, bottom_right_position);
 
   InitializeParticlesCollection();
-  particlePhysicsEngine = particlePhysicsEngine;
 }
 
 void GasContainer::Display() const {
@@ -28,15 +26,21 @@ void GasContainer::Display() const {
 
 void GasContainer::AdvanceOneFrame() {
   for (size_t i = 0; i < particles_.size(); i++) {
-    int nearest_index =
-        particlePhysicsEngine.FindNearestParticleIndex(i, particles_);
+    // get index of the particle colliding with the current particle
+    int colliding_index = GetCollidingParticleIndex(i);
 
-    particlePhysicsEngine.UpdateParticleVelocity(
-        particles_[i], particles_[nearest_index], top_left_position_,
-        bottom_right_position);
+    // if particle collided with another particle update their velocities
+    if (colliding_index != -1) {
+      particles_[i].UpdateVelocitiesForParticleCollision(
+          particles_[colliding_index]);
+    } else { // check and update velocity for wall collisions (if any)
+      HandleForIfWallCollision(particles_[i]);
+    }
 
-    particles_[i].Move(); // velocity was updated above, so move now
+    // velocities were updated for any collisions (if any), so move
+    particles_[i].Move();
   }
+
 }
 void GasContainer::InitializeParticlesCollection() {
   particles_ = vector<Particle>();
@@ -93,6 +97,41 @@ void GasContainer::SetRandomVelocity(vec2 &velocity) {
       GenerateRandomFloat(kMinVelocityComponent, kMaxVelocityComponent);
   velocity = vec2(x_velocity, y_velocity);
 }
+
+int GasContainer::GetCollidingParticleIndex(int particle_index) const {
+  for (size_t i = 0; i < particles_.size(); i++) {
+    // checking if its colliding with a particle that's not itself
+    if (particle_index != i
+        &&
+        particles_[i].IsTouching(particles_[particle_index])
+        &&
+        particles_[i].IsApproaching(particles_[particle_index])) {
+      return i; // TODO: do handle situation when it might be touching 2 particles
+    }
+  }
+
+  return -1;
+}
+
+void GasContainer::HandleForIfWallCollision(Particle &particle) const {
+  float position_x = particle.GetPosition()[0];
+  float position_y = particle.GetPosition()[1];
+  float radius = particle.GetRadius();
+
+  bool is_touching_vertical_wall =
+         position_x - radius <= top_left_position_[0]
+      || position_x + radius >= bottom_right_position[0];
+  bool is_touching_horizontal_wall =
+         position_y - radius <= top_left_position_[1]
+      || position_y + radius >= bottom_right_position[1];
+
+  if (is_touching_vertical_wall) {
+    particle.UpdateVelocityForVerticalWallCollision();
+  } else if (is_touching_horizontal_wall) {
+    particle.UpdateVelocityForHorizontalWallCollision();
+  }
+}
+
 float GasContainer::GetWidth() const {
   return width_;
 }
@@ -111,5 +150,6 @@ const vec2 &GasContainer::GetBottomRightPosition() const {
 const vector<Particle> & GasContainer::GetParticles() const {
   return particles_;
 }
+
 
 }  // namespace idealgas
