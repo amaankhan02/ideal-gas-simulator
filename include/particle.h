@@ -27,7 +27,7 @@ class Particle {
    *                    the particle type as
    */
   Particle(glm::vec2 position, glm::vec2 velocity, ci::Color particle_color,
-           float radius, float mass, std::string type_name="");
+           float radius, float mass, std::string type_name = "");
 
   /**
    * Particles moves one time step by using velocity
@@ -62,14 +62,14 @@ class Particle {
   bool IsApproaching(const Particle& other_particle) const;
 
   /**
-    * Calculates & updates the new velocity of the particle when colliding with
-    * a vertical wall
+   * Calculates & updates the new velocity of the particle when colliding with
+   * a vertical wall
    */
   void UpdateVelocityForVerticalWallCollision();
 
   /**
-    * Calculates & updates the new velocity of the particle when colliding with
-    * a horizontal wall
+   * Calculates & updates the new velocity of the particle when colliding with
+   * a horizontal wall
    */
   void UpdateVelocityForHorizontalWallCollision();
 
@@ -100,7 +100,8 @@ class Particle {
    *                    that you wish to find the new velocity for
    * @param particle2   the second particle in the collision
    */
-  glm::vec2 Particle::ComputeVelocityForParticleCollision(Particle& particle1, Particle& particle2);
+  glm::vec2 Particle::ComputeVelocityForParticleCollision(Particle& particle1,
+                                                          Particle& particle2);
 };
 }  // namespace idealgas
 

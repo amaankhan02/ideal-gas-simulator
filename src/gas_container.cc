@@ -15,16 +15,14 @@ GasContainer::GasContainer(size_t particle_count, vec2 top_left_position,
   bottom_right_position =
       vec2(top_left_position_[0] + width_, top_left_position_[1] + height_);
   container_box_ = ci::Rectf(top_left_position_, bottom_right_position);
-  blue_particle_speeds = vector<float>();
-  red_particle_speeds = vector<float>();
-  green_particle_speeds = vector<float>();
   InitializeParticlesCollection();
   InitializeParticleSpeedsMap();
   UpdateParticlesSpeedMap();
 }
 
 GasContainer::GasContainer(size_t particle_count, vec2 top_left_position,
-                           vec2 container_dimension, int seed, vector<Particle>& particles) {
+                           vec2 container_dimension, int seed,
+                           vector<Particle> &particles) {
   srand(seed);
   particle_count_ = particle_count;
   top_left_position_ = top_left_position;
@@ -33,9 +31,6 @@ GasContainer::GasContainer(size_t particle_count, vec2 top_left_position,
   bottom_right_position =
       vec2(top_left_position_[0] + width_, top_left_position_[1] + height_);
   container_box_ = ci::Rectf(top_left_position_, bottom_right_position);
-  blue_particle_speeds = vector<float>();
-  red_particle_speeds = vector<float>();
-  green_particle_speeds = vector<float>();
   particles_ = particles;
   InitializeParticleSpeedsMap();
   UpdateParticlesSpeedMap();
@@ -51,11 +46,12 @@ void GasContainer::AdvanceOneFrame() {
   for (size_t i = 0; i < particles_.size(); i++) {
     int colliding_index = GetCollidingParticleIndex(i);
 
-    if (colliding_index == -1) { // particle didn't collide with another particle
+    if (colliding_index ==
+        -1) {  // particle didn't collide with another particle
       HandleIfWallCollision(particles_[i]);
     } else {
-      particles_[i]
-          .UpdateVelocitiesForParticleCollision(particles_[colliding_index]);
+      particles_[i].UpdateVelocitiesForParticleCollision(
+          particles_[colliding_index]);
     }
     particle_speeds_.at(particles_[i].GetTypeName())
         .push_back(particles_[i].GetSpeed());
@@ -80,9 +76,8 @@ Particle GasContainer::GenerateRandomParticle(int particle_number) {
   SetRandomVelocity(velocity);
 
   if (particle_number % 3 == 0) {
-    return Particle(position, velocity, kBlueParticleColor,
-                    kBlueParticleRadius, kBlueParticleMass,
-                    kBlueParticleType);
+    return Particle(position, velocity, kBlueParticleColor, kBlueParticleRadius,
+                    kBlueParticleMass, kBlueParticleType);
   } else if (particle_number % 3 == 1) {
     return Particle(position, velocity, kRedParticleColor, kRedParticleRadius,
                     kRedParticleMass, kRedParticleType);
@@ -106,11 +101,6 @@ float GasContainer::GenerateRandomFloat(float lower_bound, float upper_bound) {
   return (random * range) + lower_bound;
 }
 
-int GasContainer::GenerateRandomInt(int lower_bound, int upper_bound) {
-  return static_cast<int>(GenerateRandomFloat(
-      static_cast<float>(lower_bound), static_cast<float>(upper_bound)));
-}
-
 void GasContainer::SetRandomPosition(vec2 &position) {
   // offset each bound by a margin to make sure particle doesn't spawn too
   // close to the bounds
@@ -128,7 +118,7 @@ void GasContainer::SetRandomPosition(vec2 &position) {
 void GasContainer::DrawParticles() const {
   for (const auto &particle : particles_) {
     ci::gl::color(particle.GetColor());
-      ci::gl::drawSolidCircle(particle.GetPosition(), particle.GetRadius());
+    ci::gl::drawSolidCircle(particle.GetPosition(), particle.GetRadius());
   }
 }
 void GasContainer::SetRandomVelocity(vec2 &velocity) {
@@ -144,9 +134,9 @@ int GasContainer::GetCollidingParticleIndex(size_t particle_index) const {
     // checking if its colliding with a particle that's not itself
     if (particle_index == i) {
       continue;
-    } else if (particles_[i].IsTouching(particles_[particle_index])
-      && particles_[i].IsApproaching(particles_[particle_index])) {
-      return i; // TODO: do i handle situation when it might be touching 2 particles
+    } else if (particles_[i].IsTouching(particles_[particle_index]) &&
+               particles_[i].IsApproaching(particles_[particle_index])) {
+      return i;
     }
   }
 
@@ -159,11 +149,11 @@ void GasContainer::HandleIfWallCollision(Particle &particle) {
   float radius = particle.GetRadius();
 
   bool is_touching_vertical_wall =
-         position_x - radius <= top_left_position_[0]
-      || position_x + radius >= bottom_right_position[0];
+      position_x - radius <= top_left_position_[0] ||
+      position_x + radius >= bottom_right_position[0];
   bool is_touching_horizontal_wall =
-         position_y - radius <= top_left_position_[1]
-      || position_y + radius >= bottom_right_position[1];
+      position_y - radius <= top_left_position_[1] ||
+      position_y + radius >= bottom_right_position[1];
 
   if (is_touching_vertical_wall) {
     particle.UpdateVelocityForVerticalWallCollision();
@@ -187,22 +177,20 @@ const vec2 &GasContainer::GetTopLeftPosition() const {
 const vec2 &GasContainer::GetBottomRightPosition() const {
   return bottom_right_position;
 }
-const vector<Particle> & GasContainer::GetParticles() const {
+const vector<Particle> &GasContainer::GetParticles() const {
   return particles_;
 }
-const std::map<std::string, vector<float>>& GasContainer::GetParticleSpeeds() const {
+const std::map<std::string, vector<float>> &GasContainer::GetParticleSpeeds()
+    const {
   return particle_speeds_;
 }
 void GasContainer::InitializeParticleSpeedsMap() {
-  particle_speeds_ = {
-      { kBlueParticleType, vector<float>() },
-      { kRedParticleType, vector<float>() },
-      { kGreenParticleType, vector<float>() }
-  };
+  particle_speeds_ = {{kBlueParticleType, vector<float>()},
+                      {kRedParticleType, vector<float>()},
+                      {kGreenParticleType, vector<float>()}};
 }
 void GasContainer::UpdateParticlesSpeedMap() {
-  for (const auto& particle : particles_) {
-
+  for (const auto &particle : particles_) {
   }
 }
 void GasContainer::ClearParticleSpeedsMapVectors() {
@@ -210,6 +198,5 @@ void GasContainer::ClearParticleSpeedsMapVectors() {
   particle_speeds_.at(kRedParticleType).clear();
   particle_speeds_.at(kGreenParticleType).clear();
 }
-
 
 }  // namespace idealgas

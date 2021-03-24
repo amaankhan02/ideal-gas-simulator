@@ -9,7 +9,8 @@ using std::string;
 namespace idealgas {
 
 Particle::Particle(glm::vec2 position, glm::vec2 velocity,
-                   ci::Color particle_color, float radius, float mass, string type_name) {
+                   ci::Color particle_color, float radius, float mass,
+                   string type_name) {
   position_ = position;
   velocity_ = velocity;
   color_ = particle_color;
@@ -34,8 +35,7 @@ void Particle::Move() {
 }
 bool Particle::IsTouching(const Particle& other_particle) const {
   // get distance between the 2 particles
-  float distance = fabs(
-      glm::distance(position_, other_particle.position_));
+  float distance = fabs(glm::distance(position_, other_particle.position_));
 
   // checks if particles are touching
   return distance <= (radius_ + other_particle.radius_);
@@ -62,15 +62,19 @@ bool Particle::IsApproaching(const Particle& other_particle) const {
   // then particle 2 is getting closer to (i.e. approaching) particle 1
   return new_distance < old_distance;
 }
-void Particle::UpdateVelocitiesForParticleCollision(Particle& colliding_particle) {
-  vec2 new_velocity_1 = ComputeVelocityForParticleCollision(*this, colliding_particle);
-  vec2 new_velocity_2 = ComputeVelocityForParticleCollision(colliding_particle, *this);
+void Particle::UpdateVelocitiesForParticleCollision(
+    Particle& colliding_particle) {
+  vec2 new_velocity_1 =
+      ComputeVelocityForParticleCollision(*this, colliding_particle);
+  vec2 new_velocity_2 =
+      ComputeVelocityForParticleCollision(colliding_particle, *this);
 
   velocity_ = new_velocity_1;
   colliding_particle.velocity_ = new_velocity_2;
 }
 
-glm::vec2 Particle::ComputeVelocityForParticleCollision(Particle& particle1, Particle& particle2) {
+glm::vec2 Particle::ComputeVelocityForParticleCollision(Particle& particle1,
+                                                        Particle& particle2) {
   // calculate difference between velocities & distance between particle 1 & 2
   vec2 velocity_difference = particle1.velocity_ - particle2.velocity_;
   vec2 distance = particle1.position_ - particle2.position_;
@@ -79,22 +83,22 @@ glm::vec2 Particle::ComputeVelocityForParticleCollision(Particle& particle1, Par
   float squared_length_of_distance = glm::length2(distance);
 
   // compute mass fraction
-  float mass_fraction = 2 * particle2.mass_ / (particle1.mass_ + particle2.mass_);
+  float mass_fraction =
+      2 * particle2.mass_ / (particle1.mass_ + particle2.mass_);
 
   // compute the fraction in the equation that multiplies the distance vector
-  float multiplier = mass_fraction * (glm::dot(velocity_difference, distance)
-                       / squared_length_of_distance);
+  float multiplier = mass_fraction * (glm::dot(velocity_difference, distance) /
+                                      squared_length_of_distance);
 
   // return the final answer using the equation described in method docs
   return particle1.velocity_ - (multiplier * distance);
 }
 
-
 void Particle::UpdateVelocityForVerticalWallCollision() {
-  velocity_[0] *= -1; // negate x component
+  velocity_[0] *= -1;  // negate x component
 }
 void Particle::UpdateVelocityForHorizontalWallCollision() {
-  velocity_[1] *= -1; // negate y component
+  velocity_[1] *= -1;  // negate y component
 }
 float Particle::GetSpeed() const {
   return glm::length(velocity_);
@@ -105,6 +109,5 @@ std::string Particle::GetTypeName() const {
 float Particle::GetMass() const {
   return mass_;
 }
-
 
 }  // namespace idealgas

@@ -3,9 +3,9 @@
 
 #include <catch2/catch.hpp>
 
-using idealgas::Particle;
-using idealgas::Histogram;
 using glm::vec2;
+using idealgas::Histogram;
+using idealgas::Particle;
 using std::vector;
 
 TEST_CASE("Test Histogram Constructor") {
@@ -16,7 +16,8 @@ TEST_CASE("Test Histogram Constructor") {
   ci::ColorT<float> axis_label_color = "white";
   ci::ColorT<float> bar_color = "blue";
 
-  Histogram histogram(position, dimension, bar_color, axis_label_color, x_label, y_label);
+  Histogram histogram(position, dimension, bar_color, axis_label_color, x_label,
+                      y_label);
 
   REQUIRE(histogram.GetPosition() == position);
   REQUIRE(histogram.GetDimensions() == dimension);
@@ -34,7 +35,8 @@ TEST_CASE("UpdateData Function") {
   ci::ColorT<float> axis_label_color = "white";
   ci::ColorT<float> bar_color = "blue";
 
-  Histogram histogram(position, dimension, bar_color, axis_label_color, x_label, y_label);
+  Histogram histogram(position, dimension, bar_color, axis_label_color, x_label,
+                      y_label);
 
   SECTION("Empty vector of speeds") {
     vector<float> speeds = vector<float>();
@@ -64,4 +66,3 @@ TEST_CASE("UpdateData Function") {
     REQUIRE(actual_frequencies == expected_frequencies);
   }
 }
-

@@ -1,9 +1,8 @@
 #pragma once
 
 #include "cinder/gl/gl.h"
-#include "particle.h"
 #include "histogram.h"
-
+#include "particle.h"
 
 namespace idealgas {
 
@@ -12,7 +11,6 @@ namespace idealgas {
  * stores all of the particles and updates them on each frame of the simulation.
  */
 class GasContainer {
-
  public:
   /** Constants to hold Particle Types **/
   const std::string kBlueParticleType = "BLUE";
@@ -41,7 +39,8 @@ class GasContainer {
    * @param particles           vector of particles to be used in gas container
    */
   GasContainer(size_t particle_count, glm::vec2 top_left_position,
-               glm::vec2 container_dimension, int seed, std::vector<Particle>& particles);
+               glm::vec2 container_dimension, int seed,
+               std::vector<Particle>& particles);
   /**
    * Displays the container walls and the current positions of the particles.
    */
@@ -68,7 +67,6 @@ class GasContainer {
   const glm::vec2& GetTopLeftPosition() const;
   const glm::vec2& GetBottomRightPosition() const;
   const std::vector<Particle>& GetParticles() const;
-
 
  private:
   const float kMaxVelocityComponent = 7;
@@ -121,7 +119,6 @@ class GasContainer {
   void SetRandomPosition(glm::vec2& position);
   void SetRandomVelocity(glm::vec2& velocity);
 
-
   /**
    * Generates a random float between lower_bound (inclusive) and
    * upper_bound (exclusive). i.e, range = [lower_bound, upper_bound)
@@ -152,8 +149,6 @@ class GasContainer {
    * @param particle    particle to check if it is colliding with wall
    */
   void HandleIfWallCollision(Particle& particle);
-
-
 };
 
 }  // namespace idealgas

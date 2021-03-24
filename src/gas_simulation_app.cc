@@ -1,17 +1,27 @@
 #include "gas_simulation_app.h"
 
+using std::map;
 using std::string;
 using std::vector;
-using std::map;
+using glm::vec2;
 
 namespace idealgas {
 
 IdealGasApp::IdealGasApp()
     : container_(kParticleCount, vec2(kGasTopLeftX, kGasTopLeftY),
-vec2(kGasWidth, kGasHeight), kRandomSeed),
-      blue_particle_histogram(vec2(kHistogramX, kBlueHistogramY), kHistogramDimension, kBlueHistogramColor, kHistogramAxisLabelColor, kBlueXAxisLabel, kYAxisLabel),
-      red_particle_histogram(vec2(kHistogramX, kRedHistogramY), kHistogramDimension, kRedHistogramColor, kHistogramAxisLabelColor, kRedXAxisLabel, kYAxisLabel),
-      green_particle_histogram(vec2(kHistogramX, kGreenHistogramY), kHistogramDimension, kGreenHistogramColor, kHistogramAxisLabelColor, kGreenXAxisLabel, kYAxisLabel){
+                 vec2(kGasWidth, kGasHeight), kRandomSeed),
+      blue_particle_histogram(vec2(kHistogramX, kBlueHistogramY),
+                              kHistogramDimension, kBlueHistogramColor,
+                              kHistogramAxisLabelColor, kBlueXAxisLabel,
+                              kYAxisLabel),
+      red_particle_histogram(vec2(kHistogramX, kRedHistogramY),
+                             kHistogramDimension, kRedHistogramColor,
+                             kHistogramAxisLabelColor, kRedXAxisLabel,
+                             kYAxisLabel),
+      green_particle_histogram(vec2(kHistogramX, kGreenHistogramY),
+                               kHistogramDimension, kGreenHistogramColor,
+                               kHistogramAxisLabelColor, kGreenXAxisLabel,
+                               kYAxisLabel) {
   ci::app::setWindowSize(kWindowSize, kWindowSize);
 }
 
