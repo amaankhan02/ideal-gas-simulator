@@ -6,6 +6,7 @@
 using idealgas::GasContainer;
 using idealgas::Particle;
 using std::vector;
+using glm::vec2;
 
 TEST_CASE("Test Constructor: Important values initialized correctly") {
   GasContainer container(10, vec2(9, 11), vec2(30, 40), 5);

@@ -3,6 +3,7 @@
 #include <catch2/catch.hpp>
 
 using idealgas::Particle;
+using glm::vec2;
 
 TEST_CASE("Test Particle Constructor: Important values initialized correctly") {
   vec2 position(2, 3);
