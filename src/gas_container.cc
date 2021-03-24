@@ -46,8 +46,7 @@ void GasContainer::AdvanceOneFrame() {
   for (size_t i = 0; i < particles_.size(); i++) {
     int colliding_index = GetCollidingParticleIndex(i);
 
-    if (colliding_index ==
-        -1) {  // particle didn't collide with another particle
+    if (colliding_index == -1) {  // particle didn't collide with another particle
       HandleIfWallCollision(particles_[i]);
     } else {
       particles_[i].UpdateVelocitiesForParticleCollision(
