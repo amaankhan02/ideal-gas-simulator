@@ -12,6 +12,9 @@ namespace idealgas {
  */
 class IdealGasApp : public ci::app::App {
  public:
+  /**
+   * Default constructor
+   */
   IdealGasApp();
 
   /**
@@ -26,6 +29,7 @@ class IdealGasApp : public ci::app::App {
   void update() override;
 
   const int kWindowSize = 1600;
+
   /** Constant variables for Gas Container **/
   const float kGasTopLeftX = 800;
   const float kGasTopLeftY = 100;

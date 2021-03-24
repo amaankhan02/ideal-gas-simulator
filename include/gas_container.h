@@ -14,23 +14,32 @@ namespace idealgas {
 class GasContainer {
 
  public:
-  const std::string kBlueParticleType = "BLUE"; // todo: can make these enums later
+  /** Constants to hold Particle Types **/
+  const std::string kBlueParticleType = "BLUE";
   const std::string kRedParticleType = "RED";
   const std::string kGreenParticleType = "GREEN";
 
   /**
-   * Initialize GasContainer with parameters
+   * Initialize GasContainer with parameters. Randomly generates particles.
    * @param particle_count      Number of particles
    * @param top_left_position   Coordinates (x, y) of the top left corner of the
    *                            container
    * @param container_dimension 2d vector as <width, height> of the container
    * @param seed                seed for generating random numbers
-   * @param particlePhysicsEngine       a Physics engine to handle the particles
-   *                            movement
    */
   GasContainer(size_t particle_count, glm::vec2 top_left_position,
                glm::vec2 container_dimension, int seed);
 
+  /**
+   * Initialize GasContainer with parameters. Initialize with passed in
+   * particles instead of randomly generated particles.
+   * @param particle_count      Number of particles
+   * @param top_left_position   Coordinates (x, y) of the top left corner of the
+   *                            container
+   * @param container_dimension 2d vector as <width, height> of the container
+   * @param seed                seed for generating random numbers
+   * @param particles           vector of particles to be used in gas container
+   */
   GasContainer(size_t particle_count, glm::vec2 top_left_position,
                glm::vec2 container_dimension, int seed, std::vector<Particle>& particles);
   /**
@@ -43,7 +52,16 @@ class GasContainer {
    * described in the assignment documentation).
    */
   void AdvanceOneFrame();
+
+  /**
+   * Returns a map of the particle speeds. With each key being the particle
+   * type name, and the value being a vector of speeds of each particle with
+   * that type name
+   *
+   * @return    particle speeds map
+   */
   const std::map<std::string, std::vector<float>>& GetParticleSpeeds() const;
+
   float GetWidth() const;
   float GetHeight() const;
   size_t GetParticleCount() const;
@@ -54,8 +72,8 @@ class GasContainer {
 
  private:
   const float kMaxVelocityComponent = 7;
-
   const float kMinVelocityComponent = -kMaxVelocityComponent;
+
   const ci::ColorT<float> kBlueParticleColor = "blue";
   const float kBlueParticleMass = 5;
   const float kBlueParticleRadius = 20;
@@ -75,10 +93,6 @@ class GasContainer {
   float height_;
   size_t particle_count_;
 
-  std::vector<float> blue_particle_speeds;
-  std::vector<float> red_particle_speeds;
-  std::vector<float> green_particle_speeds;
-
   /** Collection of particles inside the container **/
   std::vector<Particle> particles_;
 
@@ -91,6 +105,10 @@ class GasContainer {
   /** Location of the Bottom-right corner of the box relative to the canvas**/
   glm::vec2 bottom_right_position;
 
+  /**
+   * Map of speeds of each particle. Key = particle type name
+   * Value = a vector of particle speeds for the corresponding particle type
+   */
   std::map<std::string, std::vector<float>> particle_speeds_;
 
   void InitializeParticlesCollection();
@@ -99,8 +117,6 @@ class GasContainer {
   void ClearParticleSpeedsMapVectors();
   void DrawContainer() const;
   void DrawParticles() const;
-
-  int GenerateRandomInt(int lower_bound, int upper_bound);
   Particle GenerateRandomParticle(int particle_number);
   void SetRandomPosition(glm::vec2& position);
   void SetRandomVelocity(glm::vec2& velocity);
@@ -115,29 +131,6 @@ class GasContainer {
    * @return            a random float
    */
   float GenerateRandomFloat(float lower_bound, float upper_bound);
-
-
-  /**
-  * Checks for any collisions (wall or other particle collisions) and
-  * updates the velocity of particle & closest_particle respectfully
-  * depending on the condition.
-  *
-  * @param particle                The current particle to be viewed and
-  *                                checked for any collision
-  * @param closest_particle        The nearest particle to 'particle' object
-  *                                and is updated as well if there is a
-  *                                collision between particle and
-  *                                closest_particle
-  * @param container_top_left      top left coordinates of the container
-  *                                that the particle is in. Represented as
-  *                                <x, y> coordinates
-  * @param container_bottom_right  bottom right coordinates of the container
-  *                                that the particle is in. Represented as
-  *                                <x, y> coordinates
-  */
-  void UpdateParticleVelocity(Particle& particle, Particle& closest_particle,
-                              glm::vec2 container_top_left,
-                              glm::vec2 container_bottom_right); // TODO: do i want this here? is this already in particle.h?
 
   /**
    * Gets the index of the particle that is currently colliding with the

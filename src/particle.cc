@@ -63,33 +63,11 @@ bool Particle::IsApproaching(const Particle& other_particle) const {
   return new_distance < old_distance;
 }
 void Particle::UpdateVelocitiesForParticleCollision(Particle& colliding_particle) {
-//  vec2 new_velocity_1 = ComputeVelocityForParticleCollision(velocity_, colliding_particle.velocity_, position_, colliding_particle.position_);
-//  vec2 new_velocity_2 = ComputeVelocityForParticleCollision(colliding_particle.velocity_, velocity_, colliding_particle.position_, position_);
-
   vec2 new_velocity_1 = ComputeVelocityForParticleCollision(*this, colliding_particle);
   vec2 new_velocity_2 = ComputeVelocityForParticleCollision(colliding_particle, *this);
 
   velocity_ = new_velocity_1;
   colliding_particle.velocity_ = new_velocity_2;
-}
-
-glm::vec2 Particle::ComputeVelocityForParticleCollision(
-    glm::vec2& velocity1, glm::vec2& velocity2, glm::vec2& position1,
-    glm::vec2& position2) {
-
-  // calculate difference between velocities & distance between particle 1 & 2
-  vec2 velocity_difference = velocity1 - velocity2;
-  vec2 distance = position1 - position2;
-
-  // compute the squared length of the distance vector
-  float squared_length_of_distance = glm::length2(distance);
-
-  // compute the fraction in the equation that multiplies the distance vector
-  float multiplier =
-      glm::dot(velocity_difference, distance) / squared_length_of_distance;
-
-  // return the final answer using the equation described in method docs
-  return velocity1 - (multiplier * distance);
 }
 
 glm::vec2 Particle::ComputeVelocityForParticleCollision(Particle& particle1, Particle& particle2) {
@@ -124,8 +102,9 @@ float Particle::GetSpeed() const {
 std::string Particle::GetTypeName() const {
   return type_name_;
 }
-float Particle::GetMass() {
+float Particle::GetMass() const {
   return mass_;
 }
+
 
 }  // namespace idealgas

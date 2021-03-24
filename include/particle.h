@@ -49,8 +49,7 @@ class Particle {
    * @param particle_two    particle two
    * @return                true if the particles are touching each other
    */
-  bool IsTouching(const Particle& other_particle)
-      const;  // TODO: decide later if this method and IsApproaching() should actually be private. Do it like this for now
+  bool IsTouching(const Particle& other_particle) const;
 
   /**
    * Checks if the two particles are approaching each other.
@@ -75,10 +74,9 @@ class Particle {
   void UpdateVelocityForHorizontalWallCollision();
 
   /**
-   * Uses the equation to find the new velocity for an object in a 2D
-   * image, disregarding mass of the particle. The new returned velocity is
-   * for particle 1 (with velocity 1 and velocity 2), so ordering of the
-   * velocity 1 and velocity 2 (same for positions) do matter.
+   * Updates the velocities of the current particle object and the
+   * colliding particle since for how the velocities would update given
+   * a collision between the two particles.
    *
    * @param colliding_particle  The particle that the current particle is
    *                            colliding with
@@ -94,16 +92,14 @@ class Particle {
   std::string type_name_;
 
   /**
-   * Uses the equation to find the new velocity for an object in a 2D
-   * image, disregarding mass of the particle. The new returned velocity is
-   * for particle 1.
+   * Uses an equation to find the new velocity for an object in a 2D
+   * image by also taking into account the mass of the particle.
+   * The new returned velocity is for particle 1.
    *
-   * @param particle1   the first particle in the collision
+   * @param particle1   the first particle in the collision, also the particle
+   *                    that you wish to find the new velocity for
    * @param particle2   the second particle in the collision
    */
-  glm::vec2 Particle::ComputeVelocityForParticleCollision(glm::vec2& velocity1, glm::vec2& velocity2, glm::vec2& position1,
-    glm::vec2& position2);
-
   glm::vec2 Particle::ComputeVelocityForParticleCollision(Particle& particle1, Particle& particle2);
 };
 }  // namespace idealgas
