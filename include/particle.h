@@ -38,6 +38,7 @@ class Particle {
   const glm::vec2& GetVelocity() const;
   float GetSpeed() const;
   float GetRadius() const;
+  float GetMass() const;
   std::string GetTypeName() const;
 
   /**

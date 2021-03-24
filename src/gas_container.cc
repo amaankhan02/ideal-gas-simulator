@@ -23,6 +23,24 @@ GasContainer::GasContainer(size_t particle_count, vec2 top_left_position,
   UpdateParticlesSpeedMap();
 }
 
+GasContainer::GasContainer(size_t particle_count, vec2 top_left_position,
+                           vec2 container_dimension, int seed, vector<Particle>& particles) {
+  srand(seed);
+  particle_count_ = particle_count;
+  top_left_position_ = top_left_position;
+  width_ = container_dimension[0];
+  height_ = container_dimension[1];
+  bottom_right_position =
+      vec2(top_left_position_[0] + width_, top_left_position_[1] + height_);
+  container_box_ = ci::Rectf(top_left_position_, bottom_right_position);
+  blue_particle_speeds = vector<float>();
+  red_particle_speeds = vector<float>();
+  green_particle_speeds = vector<float>();
+  particles_ = particles;
+  InitializeParticleSpeedsMap();
+  UpdateParticlesSpeedMap();
+}
+
 void GasContainer::Display() const {
   DrawContainer();
   DrawParticles();
@@ -192,5 +210,6 @@ void GasContainer::ClearParticleSpeedsMapVectors() {
   particle_speeds_.at(kRedParticleType).clear();
   particle_speeds_.at(kGreenParticleType).clear();
 }
+
 
 }  // namespace idealgas

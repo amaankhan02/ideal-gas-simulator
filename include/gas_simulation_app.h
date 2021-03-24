@@ -30,7 +30,7 @@ class IdealGasApp : public ci::app::App {
   const float kGasTopLeftX = 800;
   const float kGasTopLeftY = 100;
   const float kGasWidth = 700;
-  const float kGasHeight = 700;
+  const float kGasHeight = 1200;
   const size_t kParticleCount = 30;
   const int kRandomSeed = 225;
 
@@ -38,6 +38,7 @@ class IdealGasApp : public ci::app::App {
   const float kHistogramX = 100; // x coord for ALL histograms
   const glm::vec2 kHistogramDimension = vec2(400, 400);
   const int histogram_num_bins_ = 10;
+  const std::string kYAxisLabel = "Frequency";
 
   const float kBlueHistogramY = 100;
   const float kRedHistogramY = 550;
@@ -47,6 +48,10 @@ class IdealGasApp : public ci::app::App {
   const ci::ColorT<float> kRedHistogramColor = "red";
   const ci::ColorT<float> kGreenHistogramColor = "green";
   const ci::ColorT<float> kHistogramAxisLabelColor = "white";
+
+  const std::string kBlueXAxisLabel = "Blue Particle Speed";
+  const std::string kRedXAxisLabel = "Red Particle Speed";
+  const std::string kGreenXAxisLabel = "Green Particle Speed";
 
 
  private:

@@ -4,7 +4,6 @@
 #include "particle.h"
 #include "histogram.h"
 
-using glm::vec2;
 
 namespace idealgas {
 
@@ -29,8 +28,11 @@ class GasContainer {
    * @param particlePhysicsEngine       a Physics engine to handle the particles
    *                            movement
    */
-  GasContainer(size_t particle_count, vec2 top_left_position,
-               vec2 container_dimension, int seed);
+  GasContainer(size_t particle_count, glm::vec2 top_left_position,
+               glm::vec2 container_dimension, int seed);
+
+  GasContainer(size_t particle_count, glm::vec2 top_left_position,
+               glm::vec2 container_dimension, int seed, std::vector<Particle>& particles);
   /**
    * Displays the container walls and the current positions of the particles.
    */
@@ -41,14 +43,12 @@ class GasContainer {
    * described in the assignment documentation).
    */
   void AdvanceOneFrame();
-
   const std::map<std::string, std::vector<float>>& GetParticleSpeeds() const;
-
   float GetWidth() const;
   float GetHeight() const;
   size_t GetParticleCount() const;
-  const vec2& GetTopLeftPosition() const;
-  const vec2& GetBottomRightPosition() const;
+  const glm::vec2& GetTopLeftPosition() const;
+  const glm::vec2& GetBottomRightPosition() const;
   const std::vector<Particle>& GetParticles() const;
 
 
@@ -102,8 +102,8 @@ class GasContainer {
 
   int GenerateRandomInt(int lower_bound, int upper_bound);
   Particle GenerateRandomParticle(int particle_number);
-  void SetRandomPosition(vec2& position);
-  void SetRandomVelocity(vec2& velocity);
+  void SetRandomPosition(glm::vec2& position);
+  void SetRandomVelocity(glm::vec2& velocity);
 
 
   /**

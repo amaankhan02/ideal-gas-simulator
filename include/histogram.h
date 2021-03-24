@@ -10,35 +10,38 @@ namespace idealgas {
  */
 class Histogram {
  public:
-  Histogram(glm::vec2 position, glm::vec2 dimension, ci::Color bar_color,
-            ci::Color axis_color);
+  Histogram(const glm::vec2& position, const glm::vec2& dimension,
+            const ci::Color& bar_color, const ci::Color& axis_label_color,
+            std::string& x_axis_label, std::string& y_axis_label);
 
   void UpdateData(std::vector<float> data, int num_bins);
   void Draw();
 
   const glm::vec2& GetPosition() const;
   const ci::Color& GetBarColor() const;
-  const ci::Color& GetAxisColor() const;
+  const ci::Color& GetAxisLabelColor() const;
+  const glm::vec2 GetDimensions() const;
   std::string GetXLabel() const;
   std::string GetYLabel() const;
-
-  void SetXLabel(std::string x_label);
-  void SetYLabel(std::string y_label);
+  float GetBarWidth() const;
+  const std::vector<int>& GetBins() const;
 
  private:
+  const float kXLabelMargin = 10;
+  const float kYLabelMargin = 85;
   glm::vec2 position_;
   float width_;
   float height_;
   ci::Color bar_color_;
-  ci::Color axis_color_;
-  std::string x_label_; // x-axis label
-  std::string y_label_; // y-axis label
+  ci::Color axis_label_color_;
+  std::string x_axis_label_; // x-axis label
+  std::string y_axis_label_; // y-axis label
   float bar_width_;     // width of each bar in the graph
 
   /**
    * vector of frequencies for each bar/bin
    */
-  std::vector<int> bins_; // TODO: rename to frequencies_? instead of bins_?
+  std::vector<int> bins_;
 
   void DrawLabels();
   void DrawAxis();

@@ -124,5 +124,8 @@ float Particle::GetSpeed() const {
 std::string Particle::GetTypeName() const {
   return type_name_;
 }
+float Particle::GetMass() {
+  return mass_;
+}
 
 }  // namespace idealgas
