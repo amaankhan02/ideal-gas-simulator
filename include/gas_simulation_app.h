@@ -40,7 +40,7 @@ class IdealGasApp : public ci::app::App {
 
   /** Constant variables for Histograms **/
   const float kHistogramX = 100;  // x coord for ALL histograms
-  const glm::vec2 kHistogramDimension = vec2(400, 400);
+  const glm::vec2 kHistogramDimension = glm::vec2(400, 400);
   const int histogram_num_bins_ = 10;
   const std::string kYAxisLabel = "Frequency";
 
@@ -60,7 +60,6 @@ class IdealGasApp : public ci::app::App {
  private:
   GasContainer container_;
   Histogram blue_particle_histogram;
-
   Histogram red_particle_histogram;
   Histogram green_particle_histogram;
 };

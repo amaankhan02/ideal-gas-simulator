@@ -49,7 +49,6 @@ void Histogram::DrawLabels() {
   ci::gl::drawStringCentered(x_axis_label_, x_label_position, axis_label_color_,
                              ci::Font("Arial", 20));
 
-  //  ci::rotate(-M_PI/2);
   vec2 y_label_position =
       vec2(position_[0] - kYLabelMargin, position_[1] + (height_ / 2));
   ci::gl::drawString(y_axis_label_, y_label_position, axis_label_color_,
